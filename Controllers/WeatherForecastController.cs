@@ -27,6 +27,7 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
             userService = new UserService();
         }
 
+        // Protected Route
         [HttpGet("api/summaries")]
         [Authorize]
         public IActionResult GetSummaries()
@@ -34,6 +35,7 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
             return Ok(Summaries);
         }
 
+        // Public Route
         [HttpGet("/landing-page")]
         [AllowAnonymous]
         public IActionResult LandingPage()
@@ -41,6 +43,7 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
             return Ok("This is a public page!");
         }
 
+        // Public Route
         [HttpPost("api/login")]
         [AllowAnonymous]
         public IActionResult Login([FromBody] User userCredentials)
@@ -60,6 +63,22 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
 
             return response;
 
+        }
+
+        // Protected Route - For Admins
+        [HttpGet("api/admin-dashboard")]
+        [Authorize(Roles = "Admin")]
+        public string AdminDashboard()
+        {
+            return "This is a protected route! Only admins can access it.";
+        }
+
+        // Protected Route - For Users
+        [HttpGet("api/user-dashboard")]
+        [Authorize(Roles = "User")]
+        public string UserDashboard()
+        {
+            return "This is a protected route! Only users can access it.";
         }
     }
 }
