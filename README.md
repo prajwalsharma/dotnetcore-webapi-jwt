@@ -2,6 +2,8 @@
 
 .NET Core Web API 5.0 with JWT authentication.
 
+[ASP.NET 5: Authorization and Authentication with Bearer and JWT](https://levelup.gitconnected.com/asp-net-5-authorization-and-authentication-with-bearer-and-jwt-2d0cef85dc5d)
+
 
 
 ### 1. Add below packages from Nuget
