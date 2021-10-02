@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWT-Authentication-NET-Core-Web-API-5.0", "JWT-Authentication-NET-Core-Web-API-5.0.csproj", "{B93C5E3A-FFF6-4D6C-A424-23E182A52485}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B93C5E3A-FFF6-4D6C-A424-23E182A52485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B93C5E3A-FFF6-4D6C-A424-23E182A52485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B93C5E3A-FFF6-4D6C-A424-23E182A52485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B93C5E3A-FFF6-4D6C-A424-23E182A52485}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1184EF28-2436-4333-9F8B-625429C92A30}
+	EndGlobalSection
+EndGlobal
