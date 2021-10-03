@@ -1,6 +1,7 @@
 ﻿using JWT_Authentication_NET_Core_Web_API_5._0.Models;
 using JWT_Authentication_NET_Core_Web_API_5._0.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -44,9 +45,10 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
         }
 
         // Public Route
-        [HttpPost("api/login")]
+        // Generate JWT and client can store the token in sessionStorage or localStorage
+        [HttpPost("api/login-jwt")]
         [AllowAnonymous]
-        public IActionResult Login([FromBody] User userCredentials)
+        public IActionResult LoginJWT([FromBody] User userCredentials)
         {
 
             dynamic response = Unauthorized();
@@ -59,6 +61,31 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
                 userCredentials.Password = "";
                 var responseObject = new { user, token = jwtToken };
                 response = Ok(responseObject);
+            }
+
+            return response;
+
+        }
+
+        // Public Route
+        // Generate JWT & set it in response cookie, which client cannot store anywhere
+        [HttpPost("api/login-cookie")]
+        [AllowAnonymous]
+        public IActionResult LoginCookie([FromBody] User userCredentials)
+        {
+
+            dynamic response = Unauthorized();
+
+            var user = userService.AuthenticateUser(userCredentials);
+
+            if (user != null)
+            {
+                var jwtToken = tokenService.GenerateJwtToken(user);
+
+                Response.Cookies.Append("X-Access-Token", jwtToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+                Response.Cookies.Append("X-Username", user.Username, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+
+                response = Ok();
             }
 
             return response;
