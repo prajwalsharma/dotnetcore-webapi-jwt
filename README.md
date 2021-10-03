@@ -2,7 +2,15 @@
 
 .NET Core Web API 5.0 with JWT authentication.
 
-[ASP.NET 5: Authorization and Authentication with Bearer and JWT](https://levelup.gitconnected.com/asp-net-5-authorization-and-authentication-with-bearer-and-jwt-2d0cef85dc5d)
+- Generate JWT token & return as a string.
+
+- Generate JWT token & return in response cookie.
+
+- Refresh JWT token & cookie for silent token refresh.
+
+  
+
+Tutorial: [ASP.NET 5: Authorization and Authentication with Bearer and JWT](https://levelup.gitconnected.com/asp-net-5-authorization-and-authentication-with-bearer-and-jwt-2d0cef85dc5d)
 
 
 
