@@ -18,7 +18,6 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-
         private readonly TokenService tokenService;
         private readonly UserService userService;
 
@@ -44,9 +43,9 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
             return Ok("This is a public page!");
         }
 
-        // Public Route
+        // Public Login Route
         // Generate JWT and client can store the token in sessionStorage or localStorage
-        [HttpPost("api/login-jwt")]
+        [HttpPost("auth/login-jwt")]
         [AllowAnonymous]
         public IActionResult LoginJWT([FromBody] User userCredentials)
         {
@@ -67,9 +66,9 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
 
         }
 
-        // Public Route
+        // Public Login Route
         // Generate JWT & set it in response cookie, which client cannot store anywhere
-        [HttpPost("api/login-cookie")]
+        [HttpPost("auth/login-cookie")]
         [AllowAnonymous]
         public IActionResult LoginCookie([FromBody] User userCredentials)
         {
@@ -80,15 +79,50 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Controllers
 
             if (user != null)
             {
-                var jwtToken = tokenService.GenerateJwtToken(user);
+                string jwtToken = tokenService.GenerateJwtToken(user);
+                string newRefreshToken = "token1";// Guid.NewGuid().ToString();
+                user.RefreshToken = newRefreshToken;
 
                 Response.Cookies.Append("X-Access-Token", jwtToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
                 Response.Cookies.Append("X-Username", user.Username, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+                Response.Cookies.Append("X-Refresh-Token", user.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
 
                 response = Ok();
             }
 
             return response;
+
+        }
+
+        // Refresh & generate new JWT token and cookies
+        [HttpGet("auth/refresh")]
+        [AllowAnonymous]
+        public IActionResult Refresh()
+        {
+            string userName = Request.Cookies["X-Username"];
+            string refreshToken = Request.Cookies["X-Refresh-Token"];
+
+            if (userName == null || refreshToken == null)
+            {
+                return BadRequest();
+            }
+
+            var user = userService.AuthenticateUser(userName, refreshToken);
+
+            if (user == null) {
+                return BadRequest();
+            }
+
+            user.RefreshToken = "token3";
+            string jwtToken = tokenService.GenerateJwtToken(user);
+
+            // Update database with new refresh token...
+
+            Response.Cookies.Append("X-Access-Token", jwtToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+            Response.Cookies.Append("X-Username", user.Username, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+            Response.Cookies.Append("X-Refresh-Token", user.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+
+            return Ok();
 
         }
 

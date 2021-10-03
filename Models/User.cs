@@ -13,5 +13,6 @@ namespace JWT_Authentication_NET_Core_Web_API_5._0.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
+        public string RefreshToken { get; set; }
     }
 }
